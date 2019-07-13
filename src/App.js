@@ -1,12 +1,12 @@
 /* eslint-disable prettier/prettier */
 import React, { Component } from 'react';
-import { View } from 'react-native';
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
+import ReduxThunk from 'redux-thunk';
+
+import Router from './Router';
 import reducers from './reducers';
 import firebase from 'firebase';
-
-import LoginForm from './components/LoginForm';
 
 class App extends Component {
   componentDidMount() {
@@ -23,11 +23,10 @@ class App extends Component {
   }
 
   render() {
+    const store = createStore(reducers, {}, applyMiddleware(ReduxThunk));
     return (
-      <Provider store={createStore(reducers)}>
-        <View style={{flex: 1}}>
-          <LoginForm/>
-        </View>
+      <Provider store={store}>
+        <Router />
       </Provider>
     );
   }
